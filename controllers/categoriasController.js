@@ -1,15 +1,12 @@
-// controllers/categoriasController.js
-// Recebe a requisição (req), chama o service e decide a resposta (res).
-// Mesmo desenho do controller de produtos — só muda a entidade.
-// Todo erro inesperado vai para next(erro) e é tratado no index.js.
+
 
 import * as service from '../services/categoriasService.js';
 
-// POST /api/categorias
+
 export async function criar(req, res, next) {
   try {
     const id = await service.criar(req.body);
-    res.status(201).json({ id, ...req.body }); // 201 Created
+    res.status(201).json({ id, ...req.body }); 
   } catch (erro) {
     next(erro);
   }
@@ -46,9 +43,7 @@ export async function atualizar(req, res, next) {
   try {
     const { id } = req.params;
 
-    // Busca ANTES de atualizar (e não confere affectedRows depois): um
-    // UPDATE que não muda nenhum valor devolve affectedRows = 0 mesmo com
-    // o registro existindo, e isso viraria um 404 errado.
+    
     const categoriaExistente = await service.buscarPorId(id);
     if (!categoriaExistente) {
       return res.status(404).json({ erro: 'Categoria não encontrada' });
@@ -56,7 +51,7 @@ export async function atualizar(req, res, next) {
 
     await service.atualizar(id, req.body);
 
-    // Number(id): o id vem da URL como texto ("3"); na resposta queremos o número 3.
+   
     res.json({ id: Number(id), ...req.body });
   } catch (erro) {
     next(erro);

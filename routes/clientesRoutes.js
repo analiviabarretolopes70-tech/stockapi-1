@@ -1,6 +1,3 @@
-// routes/clientesRoutes.js
-// MÉTODO + CAMINHO → middleware de validação → controller.
-// (O prefixo /api é adicionado no index.js.)
 
 import express from 'express';
 import * as controller from '../controllers/clientesController.js';

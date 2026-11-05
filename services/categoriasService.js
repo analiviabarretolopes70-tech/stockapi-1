@@ -1,9 +1,4 @@
-// services/categoriasService.js
-// Camada de acesso ao banco para a tabela categorias. Só SQL aqui:
-// nada de req, res ou status code (isso é assunto do controller).
-//
-// categorias é a tabela mais simples do projeto: não tem chave estrangeira.
-// Quem aponta PARA ela é produtos (produtos.categoria_id).
+
 
 import pool from '../config/db.js';
 
@@ -44,8 +39,7 @@ export async function atualizar(id, categoria) {
 }
 
 // DELETE — se existir algum produto usando esta categoria, o MySQL recusa
-// (ER_ROW_IS_REFERENCED_2) e o errorHandler do index.js responde 400.
-// Isso protege os produtos de ficarem apontando para uma categoria que sumiu.
+
 export async function deletar(id) {
   const [resultado] = await pool.query('DELETE FROM categorias WHERE id = ?', [id]);
   return resultado.affectedRows;

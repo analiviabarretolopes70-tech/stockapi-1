@@ -1,34 +1,15 @@
--- database/schema.sql
--- StockAPI — Desenvolvimento Back-end II
---
--- Como executar (no terminal, dentro da pasta do projeto):
---     mysql -u root -p < database/schema.sql
--- ou abra este arquivo no MySQL Workbench e execute tudo.
---
--- "IF NOT EXISTS" permite rodar o script mais de uma vez sem erro: se a
--- tabela já existe, o MySQL simplesmente a mantém (e os dados também).
---
--- A ORDEM das tabelas importa: uma tabela com FOREIGN KEY só pode ser criada
--- DEPOIS da tabela que ela referencia.
---
---   categorias ──< produtos >──< itens_pedido >── pedidos >── clientes
---   usuarios (independente: só serve para login)
+
 
 CREATE DATABASE IF NOT EXISTS stockapi;
 USE stockapi;
 
--- ------------------------------------------------------
--- categorias — não depende de ninguém
--- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS categorias (
-  id INT AUTO_INCREMENT PRIMARY KEY,        -- gerado pelo banco: 1, 2, 3...
+  id INT AUTO_INCREMENT PRIMARY KEY,        
   nome VARCHAR(60) NOT NULL
 );
 
--- ------------------------------------------------------
--- clientes — não depende de ninguém
--- email e telefone são opcionais (aceitam NULL)
--- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS clientes (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
@@ -36,11 +17,7 @@ CREATE TABLE IF NOT EXISTS clientes (
   telefone VARCHAR(20)
 );
 
--- ------------------------------------------------------
--- usuarios — quem pode fazer login na API (independente das demais)
--- email UNIQUE: o banco não deixa cadastrar dois usuários com o mesmo e-mail
--- senha_hash: guarda o HASH da senha (bcrypt), nunca a senha em texto puro
--- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
@@ -49,11 +26,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
   criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- ------------------------------------------------------
--- produtos — depende de categorias
--- categoria_id aceita NULL (produto sem categoria) → por isso a API usa
--- LEFT JOIN ao listar produtos
--- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS produtos (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
@@ -64,10 +37,7 @@ CREATE TABLE IF NOT EXISTS produtos (
   FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
 
--- ------------------------------------------------------
--- pedidos — depende de clientes
--- status começa como 'pendente' se nada for informado
--- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS pedidos (
   id INT AUTO_INCREMENT PRIMARY KEY,
   cliente_id INT,
@@ -76,13 +46,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
   FOREIGN KEY (cliente_id) REFERENCES clientes(id)
 );
 
--- ------------------------------------------------------
--- itens_pedido — tabela associativa: resolve a relação N:N entre pedidos
--- e produtos (um pedido tem vários produtos; um produto está em vários
--- pedidos). Depende das DUAS tabelas.
--- preco_unitario guarda o preço NO MOMENTO da compra, mesmo que o preço do
--- produto mude depois.
--- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS itens_pedido (
   id INT AUTO_INCREMENT PRIMARY KEY,
   pedido_id INT,
