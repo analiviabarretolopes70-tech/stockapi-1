@@ -12,7 +12,7 @@ export async function criar(req, res, next) {
   }
 }
 
-// GET /api/categorias
+
 export async function listar(req, res, next) {
   try {
     const categorias = await service.listarTodos();
@@ -22,7 +22,7 @@ export async function listar(req, res, next) {
   }
 }
 
-// GET /api/categorias/:id
+
 export async function buscarPorId(req, res, next) {
   try {
     const { id } = req.params;
@@ -38,7 +38,7 @@ export async function buscarPorId(req, res, next) {
   }
 }
 
-// PUT /api/categorias/:id
+
 export async function atualizar(req, res, next) {
   try {
     const { id } = req.params;
