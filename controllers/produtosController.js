@@ -1,20 +1,8 @@
-// controllers/produtosController.js
-// Cada função aqui atende UMA rota: lê o que veio na requisição (req),
-// chama o service certo, e decide o que devolver (res) — incluindo o
-// status code. Nenhuma query SQL aparece neste arquivo; quem faz isso é
-// o service.
-//
-// Reparem que toda função recebe (req, res, next). O "next" só é usado
-// dentro do catch: chamar next(erro) manda a execução pro middleware de
-// tratamento de erro central, lá no index.js — em vez de cada função
-// aqui decidir sozinha como responder um erro 500.
+
 
 import * as service from '../services/produtosService.js';
 
-// POST /api/produtos
-// Quando essa função é chamada, o corpo da requisição JÁ passou pela
-// validação (middlewares/validarProduto.js, aplicado na rota) — não
-// precisamos checar de novo se nome/preco vieram certos.
+
 export async function criar(req, res, next) {
   try {
     const id = await service.criar(req.body);
